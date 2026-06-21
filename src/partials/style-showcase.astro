@@ -1,0 +1,314 @@
+---
+import type { SiteContent } from "../data/content.ts";
+import PhoneFrame from "../components/phone-frame.astro";
+import VideoPlaceholder from "../components/video-placeholder.astro";
+
+interface Props {
+  readonly content: SiteContent["styleShowcase"];
+}
+
+const { content } = Astro.props;
+
+const accents = [
+  "bg-pink-pastel text-navy-deep",
+  "bg-yellow-soft text-navy-deep",
+  "bg-blue-pale text-navy-deep",
+  "bg-pink-pastel text-navy-deep",
+];
+---
+
+<section id="pricelist" class="relative px-6 py-24">
+  <div class="mx-auto max-w-7xl">
+    <p class="font-display mb-4 text-center text-sm tracking-widest text-muted">
+      {content.heading}
+    </p>
+    <h2 class="font-display mb-4 text-center text-5xl md:text-6xl">
+      {content.title}
+    </h2>
+    <p class="mx-auto mb-16 max-w-2xl text-center text-muted">
+      {content.subtitle}
+    </p>
+
+    <div
+      class="style-expander flex flex-col gap-4 md:h-[34rem] md:flex-row"
+      data-style-expander
+    >
+      {
+        content.styles.map((style, styleIndex) => {
+          const accent = accents[styleIndex % accents.length];
+
+          const featureList = (
+            <ul class="space-y-3 text-left">
+              {style.features.map((feature) => (
+                <li class="flex items-start gap-3">
+                  <span
+                    class:list={[
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-xl",
+                      accent,
+                    ]}
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d={feature.icon} />
+                    </svg>
+                  </span>
+                  <span class="pt-1 text-sm leading-relaxed text-muted md:text-base">
+                    {feature.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          );
+
+          const desktopVideos = (
+            <div class="style-videos flex items-end justify-center gap-3 md:gap-4 lg:gap-5">
+              {style.videos.slice(0, 2).map((video) => (
+                <PhoneFrame size="md">
+                  <VideoPlaceholder {...video} />
+                </PhoneFrame>
+              ))}
+            </div>
+          );
+
+          const mobileVideos = (
+            <div class="style-videos flex items-end justify-center gap-3">
+              {style.videos.slice(0, 2).map((video) => (
+                <PhoneFrame size="sm">
+                  <VideoPlaceholder {...video} />
+                </PhoneFrame>
+              ))}
+            </div>
+          );
+
+          return (
+            <article
+              class="style-card group/card glass-card relative flex-1 cursor-pointer overflow-hidden rounded-3xl transition-all duration-500 ease-out md:rounded-[2rem]"
+              data-style-card
+              data-style-index={styleIndex}
+              tabindex="0"
+              role="button"
+              aria-expanded="false"
+            >
+              {/* Desktop accordion face */}
+              <div class="style-collapsed absolute inset-0 hidden flex-col items-center justify-center gap-3 p-4 transition-opacity duration-300 md:flex md:gap-4 md:p-6">
+                <span
+                  class:list={[
+                    "flex h-10 w-10 items-center justify-center rounded-2xl font-display text-lg font-bold md:h-12 md:w-12 md:text-xl",
+                    accent,
+                  ]}
+                >
+                  {styleIndex + 1}
+                </span>
+                <h3 class="font-display text-2xl text-foreground [writing-mode:vertical-rl] md:text-3xl lg:text-4xl">
+                  {style.name}
+                </h3>
+                <p class="text-sm text-muted [writing-mode:vertical-rl] md:text-base">
+                  Rp {style.price}
+                  <span class="text-muted-foreground">/menit</span>
+                </p>
+              </div>
+
+              <div class="style-expanded invisible absolute inset-0 flex flex-col gap-6 p-6 opacity-0 transition-all duration-300 md:flex-row md:items-center md:gap-8 md:p-8 lg:p-10">
+                <div class="md:w-2/5">
+                  <div class="mb-5">
+                    <h3 class="font-display text-4xl text-foreground lg:text-5xl">
+                      {style.name}
+                    </h3>
+                    <p class="font-display mt-2 text-2xl text-foreground">
+                      Rp {style.price}
+                      <span class="text-base text-muted">/menit</span>
+                    </p>
+                  </div>
+                  {featureList}
+                </div>
+                <div class="md:w-3/5">{desktopVideos}</div>
+              </div>
+
+              {/* Mobile simple face */}
+              <div class="style-mobile relative p-6 md:hidden">
+                <div class="mb-4">
+                  <h3 class="font-display text-3xl text-foreground">
+                    {style.name}
+                  </h3>
+                  <p class="font-display mt-1 text-xl text-foreground">
+                    Rp {style.price}
+                    <span class="text-sm text-muted">/menit</span>
+                  </p>
+                </div>
+                {featureList}
+                <button
+                  type="button"
+                  class="style-video-toggle mt-5 inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-semibold text-background transition hover:scale-105"
+                  aria-expanded="false"
+                >
+                  <span>Lihat Contoh Video</span>
+                  <svg
+                    class="h-4 w-4 transition-transform"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                  </svg>
+                </button>
+                <div class="style-mobile-videos mt-4" data-mobile-videos>
+                  {mobileVideos}
+                </div>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (min-width: 768px) {
+    .style-expander:has(.style-card[data-active="true"])
+      .style-card:not([data-active="true"]) {
+      flex: 0.18;
+    }
+
+    .style-card[data-active="true"] {
+      flex: 2.5;
+      cursor: default;
+    }
+
+    .style-card[data-active="true"] .style-collapsed {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .style-card[data-active="true"] .style-expanded {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .style-mobile-videos {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 450ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .style-mobile-videos.is-open {
+    grid-template-rows: 1fr;
+  }
+
+  .style-mobile-videos > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .style-mobile-videos .style-videos > * {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.96);
+    transition:
+      opacity 350ms ease-out,
+      transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .style-mobile-videos.is-open .style-videos > * {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .style-mobile-videos.is-open .style-videos > *:nth-child(1) {
+    transition-delay: 80ms;
+  }
+
+  .style-mobile-videos.is-open .style-videos > *:nth-child(2) {
+    transition-delay: 160ms;
+  }
+</style>
+
+<script>
+  (function initStyleExpander() {
+    const expander = document.querySelector<HTMLElement>(
+      "[data-style-expander]",
+    );
+    if (!expander) return;
+
+    const cards = Array.from(
+      expander.querySelectorAll<HTMLElement>("[data-style-card]"),
+    );
+    if (!cards.length) return;
+
+    function setActive(index: number | null) {
+      cards.forEach((card, i) => {
+        const isActive = i === index;
+        card.dataset.active = isActive ? "true" : "false";
+        card.setAttribute("aria-expanded", String(isActive));
+      });
+    }
+
+    // Desktop: default expand first card
+    if (window.innerWidth >= 768) {
+      setActive(0);
+    }
+
+    const closeMobileVideos: Array<() => void> = [];
+
+    cards.forEach((card, index) => {
+      card.addEventListener("mouseenter", () => {
+        if (window.innerWidth >= 768) setActive(index);
+      });
+
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          if (window.innerWidth >= 768) {
+            setActive(index);
+          }
+        }
+      });
+
+      // Mobile video toggle
+      const toggle = card.querySelector<HTMLButtonElement>(
+        ".style-video-toggle",
+      );
+      const mobileVideos = card.querySelector<HTMLElement>(
+        "[data-mobile-videos]",
+      );
+      const toggleIcon = toggle?.querySelector<SVGElement>("svg");
+
+      function setMobileVideosOpen(open: boolean) {
+        mobileVideos?.classList.toggle("is-open", open);
+        toggle?.setAttribute("aria-expanded", String(open));
+        toggleIcon?.classList.toggle("rotate-180", open);
+        if (toggle) {
+          toggle.querySelector("span")!.textContent = open
+            ? "Sembunyikan Video"
+            : "Lihat Contoh Video";
+        }
+      }
+
+      closeMobileVideos.push(() => setMobileVideosOpen(false));
+
+      toggle?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = mobileVideos?.classList.contains("is-open") ?? false;
+        setMobileVideosOpen(!isOpen);
+      });
+    });
+
+    expander.addEventListener("mouseleave", () => {
+      if (window.innerWidth >= 768) setActive(0);
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) {
+        closeMobileVideos.forEach((close) => close());
+        const current = cards.find((c) => c.dataset.active === "true");
+        setActive(current ? cards.indexOf(current) : 0);
+      } else {
+        setActive(null);
+      }
+    });
+  })();
+</script>

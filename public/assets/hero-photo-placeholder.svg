@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <rect x="8" y="8" width="384" height="384" rx="48" fill="#ffffff" stroke="#1e2a4a" stroke-width="4" stroke-dasharray="16 16"/>
+  <circle cx="200" cy="160" r="56" fill="#fad2e1"/>
+  <path d="M120 320c0-44 36-80 80-80s80 36 80 80" stroke="#1e2a4a" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="200" cy="160" r="72" stroke="#fad2e1" stroke-width="8" stroke-dasharray="12 12"/>
+  <text x="200" y="360" text-anchor="middle" font-family="Nunito Sans, sans-serif" font-size="24" font-weight="700" fill="#1e2a4a">Photo</text>
+</svg>

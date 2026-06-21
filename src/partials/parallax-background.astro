@@ -1,0 +1,182 @@
+---
+// Parallax background with clouds, Cinnamoroll figures, and stars.
+// Positions and speeds mirror the original Tanstack Start landing page.
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+  data-parallax-background
+>
+  <!-- Full-viewport Cinnamoroll overlay -->
+  <img
+    src="/assets/vecteezy_greet-cinnamoroll-from-sanrio_53071648.svg"
+    alt=""
+    class="parallax-item absolute inset-0 m-auto h-[80%] w-[80%] translate-y-20 object-contain opacity-[0.1] md:opacity-10"
+    data-speed="-0.03"
+  />
+
+  <!-- Clouds -->
+  <img
+    src="/assets/cloud-01.svg"
+    alt=""
+    class="parallax-item absolute opacity-80 float-slow"
+    data-speed="0.15"
+    style="top: 8%; left: 6%; width: 180px;"
+  />
+  <img
+    src="/assets/cloud-02.svg"
+    alt=""
+    class="parallax-item absolute opacity-70 float-mid"
+    data-speed="0.25"
+    style="top: 22%; right: 8%; width: 220px;"
+  />
+  <img
+    src="/assets/cloud-03.svg"
+    alt=""
+    class="parallax-item absolute opacity-60 float-slow"
+    data-speed="-0.2"
+    style="top: 40%; left: 72%; width: 260px;"
+  />
+  <img
+    src="/assets/cloud-04.svg"
+    alt=""
+    class="parallax-item absolute opacity-75 float-mid"
+    data-speed="-0.3"
+    style="top: 58%; left: 12%; width: 200px;"
+  />
+  <img
+    src="/assets/cloud-05.svg"
+    alt=""
+    class="parallax-item absolute opacity-50 float-slow"
+    data-speed="0.1"
+    style="top: 76%; right: 18%; width: 240px;"
+  />
+  <img
+    src="/assets/cloud-06.svg"
+    alt=""
+    class="parallax-item absolute opacity-65 float-mid"
+    data-speed="0.2"
+    style="top: 90%; left: 35%; width: 190px;"
+  />
+
+  <!-- Cinnamoroll figures floating around -->
+  <img
+    src="/assets/vecteezy_cinnamon-roll-in-the-cup_48093330.svg"
+    alt=""
+    class="parallax-item absolute float-mid opacity-60 drop-shadow-xl"
+    data-speed="0.35"
+    data-rotate="0.02"
+    style="top: 12%; left: 45%; width: 120px;"
+  />
+  <img
+    src="/assets/vecteezy_cinnamon-roll-with-teddy-bear_71481434.svg"
+    alt=""
+    class="parallax-item absolute float-slow opacity-60 drop-shadow-xl"
+    data-speed="-0.4"
+    style="top: 25%; left: 18%; width: 140px;"
+  />
+  <img
+    src="/assets/vecteezy_cinnamon-roll-with-umbrella_52405673.svg"
+    alt=""
+    class="parallax-item absolute float-mid opacity-60 drop-shadow-xl"
+    data-speed="-0.25"
+    data-rotate="-0.02"
+    style="top: 38%; left: 78%; width: 130px;"
+  />
+  <img
+    src="/assets/vecteezy_little-cinnamon-roll_75143474.svg"
+    alt=""
+    class="parallax-item absolute float-slow opacity-60 drop-shadow-xl"
+    data-speed="0.3"
+    style="top: 55%; left: 28%; width: 110px;"
+  />
+  <img
+    src="/assets/vecteezy_cinnamon-roll-in-the-cup_48093330.svg"
+    alt=""
+    class="parallax-item absolute float-slow opacity-60 drop-shadow-xl"
+    data-speed="0.45"
+    style="top: 72%; left: 62%; width: 100px;"
+  />
+  <img
+    src="/assets/vecteezy_cinnamon-roll-with-teddy-bear_71481434.svg"
+    alt=""
+    class="parallax-item absolute float-mid opacity-60 drop-shadow-xl"
+    data-speed="-0.35"
+    data-rotate="0.015"
+    style="top: 88%; left: 42%; width: 120px;"
+  />
+
+  <!-- Stars -->
+  <img
+    src="/assets/star-01.svg"
+    alt=""
+    class="parallax-item absolute drift opacity-50"
+    data-speed="0.5"
+    style="top: 18%; left: 8%; width: 45px;"
+  />
+  <img
+    src="/assets/star-03.svg"
+    alt=""
+    class="parallax-item absolute drift opacity-50"
+    data-speed="-0.5"
+    style="top: 34%; left: 58%; width: 40px;"
+  />
+  <img
+    src="/assets/star-05.svg"
+    alt=""
+    class="parallax-item absolute drift opacity-50"
+    data-speed="0.4"
+    style="top: 52%; left: 32%; width: 50px;"
+  />
+  <img
+    src="/assets/star-06.svg"
+    alt=""
+    class="parallax-item absolute drift opacity-50"
+    data-speed="-0.4"
+    style="top: 80%; left: 72%; width: 42px;"
+  />
+</div>
+
+<script>
+  (function initParallax() {
+    const wrapper = document.querySelector("[data-parallax-background]");
+    if (!wrapper) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const items = wrapper.querySelectorAll<HTMLElement>(".parallax-item");
+    if (items.length === 0) return;
+
+    let ticking = false;
+
+    function updateParallax() {
+      const scrollY = window.scrollY;
+
+      items.forEach((item) => {
+        const speed = parseFloat(item.dataset.speed ?? "0");
+        const rotate = parseFloat(item.dataset.rotate ?? "0");
+        const yOffset = scrollY * speed;
+        const rotateOffset = rotate !== 0 ? scrollY * rotate : 0;
+        const rotateCss =
+          rotateOffset !== 0 ? ` rotate(${rotateOffset}deg)` : "";
+        item.style.transform = `translateY(${yOffset}px)${rotateCss}`;
+      });
+
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateParallax();
+  })();
+</script>

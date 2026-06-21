@@ -1,0 +1,48 @@
+---
+import type { SiteContent } from "../data/content.ts";
+
+interface Props {
+  readonly content: SiteContent["contact"];
+}
+
+const { content } = Astro.props;
+
+const getButtonClass = (href: string, index: number): string => {
+  if (href.includes("wa.me")) return "bg-blue-pale text-navy-deep";
+  if (href.includes("instagram.com")) return "bg-pink-pastel text-navy-deep";
+  if (index === 0) return "bg-foreground text-background";
+  return "bg-pink-pastel text-navy-deep";
+};
+---
+
+<section id="contact" class="px-6 py-32">
+  <div
+    class="glass-card mx-auto max-w-3xl rounded-[2.5rem] p-12 text-center md:p-16"
+  >
+    <p class="font-display text-2xl text-muted">{content.subtitle}</p>
+    <h2 class="font-display my-4 whitespace-pre-line text-6xl md:text-8xl">
+      {content.heading}
+    </h2>
+    <p class="mx-auto mb-8 max-w-md text-lg text-muted">
+      {content.description}
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      {
+        content.links.map((link, idx) => {
+          const isExternal = link.href.startsWith("http");
+
+          return (
+            <a
+              href={link.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noreferrer" : undefined}
+              class={`rounded-full px-6 py-3 font-bold shadow-soft transition hover:scale-105 ${getButtonClass(link.href, idx)}`}
+            >
+              {link.label}
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
