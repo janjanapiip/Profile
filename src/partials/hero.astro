@@ -1,0 +1,106 @@
+---
+import type { SiteContent } from "../data/content.ts";
+
+interface Props {
+  readonly content: SiteContent["hero"];
+}
+
+const { content } = Astro.props;
+---
+
+<section
+  id="home"
+  class="flex min-h-[90vh] items-center justify-center px-6 pb-24 pt-12"
+>
+  <div class="grid w-full max-w-6xl items-center gap-12 md:grid-cols-2">
+    <div class="parallax-hero-text fade-up">
+      <h1
+        class="font-display text-6xl leading-[0.95] text-foreground md:text-8xl"
+      >
+        {content.title}<br />
+        <span
+          class="mt-2 inline-block rounded-3xl bg-pink-pastel px-4 py-1 text-navy-deep"
+          >{content.highlight}</span
+        >
+      </h1>
+      <p class="mt-6 max-w-md text-lg text-muted">
+        {content.description}
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#pricelist"
+          class="shadow-soft rounded-full bg-foreground px-6 py-3 font-bold text-background transition hover:scale-105"
+        >
+          Lihat Harga
+        </a>
+        <a
+          href="#contact"
+          class="glass rounded-full px-6 py-3 font-bold text-foreground transition hover:scale-105"
+        >
+          Halo ♡
+        </a>
+      </div>
+    </div>
+
+    <div class="parallax-hero-image relative flex justify-center">
+      <div class="absolute inset-0 rounded-full bg-pink-pastel/40 blur-3xl">
+      </div>
+      <div class="float-slow relative w-full max-w-md">
+        <svg
+          class="absolute -inset-3 h-[calc(100%+24px)] w-[calc(100%+24px)] text-navy-deep dark:text-white/70"
+          viewBox="0 0 448 448"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="224"
+            cy="224"
+            r="220"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-dasharray="16 16"></circle>
+        </svg>
+        <img
+          src="/assets/photo.webp"
+          alt="Foto profil Shimazaki Miyu"
+          class="relative aspect-square w-full rounded-full object-cover drop-shadow-2xl"
+          width="400"
+          height="400"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function initHeroParallax() {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const text = document.querySelector<HTMLElement>(".parallax-hero-text");
+    const image = document.querySelector<HTMLElement>(".parallax-hero-image");
+    if (!text && !image) return;
+
+    let ticking = false;
+
+    function update() {
+      const y = window.scrollY;
+      if (text) text.style.transform = `translateY(${y * -0.1}px)`;
+      if (image) image.style.transform = `translateY(${y * 0.15}px)`;
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+  })();
+</script>

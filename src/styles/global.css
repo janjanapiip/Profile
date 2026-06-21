@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode: `dark:` variants apply under `.dark`. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-sky-soft: #e5f1fb;
+  --color-cloud-white: #ffffff;
+  --color-navy-deep: #1e2a4a;
+  --color-text-soft: #334155;
+  --color-pink-pastel: #fad2e1;
+  --color-yellow-soft: #fff4bd;
+  --color-blue-pale: #d6ecff;
+
+  --color-background: #e5f1fb;
+  --color-foreground: #1e2a4a;
+  --color-surface: #ffffff;
+  --color-muted: #334155;
+  --color-muted-foreground: #64748b;
+  --color-primary: #fad2e1;
+  --color-primary-foreground: #1e2a4a;
+  --color-secondary: #fff4bd;
+  --color-secondary-foreground: #1e2a4a;
+  --color-accent: #d6ecff;
+  --color-accent-foreground: #1e2a4a;
+  --color-border: rgba(30, 42, 74, 0.08);
+  --color-card: #ffffff;
+  --color-card-foreground: #1e2a4a;
+  --color-ring: #fad2e1;
+  --color-input: rgba(30, 42, 74, 0.12);
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1e2a4a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-surface-glass: rgb(255 255 255 / 72%);
+
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Varela Round", ui-rounded, "Nunito Sans", sans-serif;
+
+  --shadow-soft: 0 8px 32px -8px rgb(30 58 138 / 12%);
+  --shadow-card: 0 4px 24px -4px rgb(30 58 138 / 10%);
+
+  --radius-lg: 1.5rem;
+}
+
+/* Theme-adaptive surface tokens (referenced by .glass / body / fallbacks). */
+:root {
+  --glass-bg: rgb(255 255 255 / 72%);
+  --glass-border: rgb(255 255 255 / 60%);
+  --glass-card-bg: rgb(255 255 255 / 35%);
+  --glass-card-border: rgb(255 255 255 / 45%);
+  --glass-bg-solid: rgb(255 255 255 / 92%);
+  --glass-card-bg-solid: rgb(255 255 255 / 85%);
+  --page-gradient: linear-gradient(
+    180deg,
+    #e5f1fb 0%,
+    #d6ecff 50%,
+    #fad2e1 100%
+  );
+  color-scheme: light;
+}
+
+/* Simple dark theme: override the semantic + glass tokens only. The pastel
+   accent colors stay light on purpose (they pair with fixed dark text). */
+html.dark {
+  --color-background: #0f1729;
+  --color-foreground: #e7ecf5;
+  --color-text-soft: #c2cbde;
+  --color-surface: #1a2236;
+  --color-muted: #c2cbde;
+  --color-muted-foreground: #8b97b3;
+  --color-border: rgb(255 255 255 / 8%);
+  --color-card: #1a2236;
+  --color-card-foreground: #e7ecf5;
+  --color-popover: #1a2236;
+  --color-popover-foreground: #e7ecf5;
+  --color-input: rgb(255 255 255 / 14%);
+
+  --glass-bg: rgb(26 34 54 / 72%);
+  --glass-border: rgb(255 255 255 / 12%);
+  --glass-card-bg: rgb(26 34 54 / 55%);
+  --glass-card-border: rgb(255 255 255 / 10%);
+  --glass-bg-solid: rgb(20 27 45 / 96%);
+  --glass-card-bg-solid: rgb(20 27 45 / 90%);
+  --page-gradient: linear-gradient(
+    180deg,
+    #0b1120 0%,
+    #131c33 50%,
+    #1d1530 100%
+  );
+  color-scheme: dark;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-24px) rotate(3deg);
+  }
+}
+
+@keyframes float-mid {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(-4deg);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--page-gradient);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  /* -webkit-backdrop-filter: blur(16px); */
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+  isolation: isolate;
+  will-change: transform;
+}
+
+.glass-card {
+  background: var(--glass-card-bg);
+  backdrop-filter: blur(16px);
+  /* -webkit-backdrop-filter: blur(16px); */
+  border: 1px solid var(--glass-card-border);
+  box-shadow: var(--shadow-card);
+  isolation: isolate;
+  will-change: transform;
+}
+
+/* Force a compositor layer on touch devices where backdrop-filter often fails to render */
+@media (hover: none) and (pointer: coarse) {
+  .glass,
+  .glass-card {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Fallback for browsers that don't support backdrop-filter at all */
+@supports not (
+  (backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))
+) {
+  .glass {
+    background: var(--glass-bg-solid);
+  }
+
+  .glass-card {
+    background: var(--glass-card-bg-solid);
+  }
+}
+
+.float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.float-mid {
+  animation: float-mid 5s ease-in-out infinite;
+}
+
+.drift {
+  animation: drift 9s ease-in-out infinite;
+}
+
+.fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

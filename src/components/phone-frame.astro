@@ -1,0 +1,46 @@
+---
+interface Props {
+  readonly size?: "sm" | "md" | "lg";
+  readonly class?: string;
+}
+
+const { size = "md", class: className = "" } = Astro.props;
+
+const sizeClasses = {
+  sm: "w-36 h-72 md:w-44 md:h-[22rem]",
+  md: "w-44 h-[22rem] md:w-52 md:h-[26rem]",
+  lg: "w-56 h-[28rem] md:w-72 md:h-[36rem]",
+};
+---
+
+<div
+  class:list={[
+    "phone-frame relative shrink-0 rounded-[2.25rem] bg-black p-2",
+    sizeClasses[size],
+    className,
+  ]}
+>
+  {/* Side buttons */}
+  <div
+    class="absolute -left-0.75 top-20 h-8 w-0.75 rounded-l-md bg-neutral-700"
+  >
+  </div>
+  <div
+    class="absolute -left-0.75 top-32 h-12 w-0.75 rounded-l-md bg-neutral-700"
+  >
+  </div>
+  <div
+    class="absolute -right-0.75 top-28 h-14 w-0.75 rounded-r-md bg-neutral-700"
+  >
+  </div>
+
+  {/* Inner bezel */}
+  <div
+    class="relative h-full w-full overflow-hidden rounded-[1.85rem] bg-neutral-950"
+  >
+    {/* Screen content */}
+    <div class="h-full w-full overflow-hidden">
+      <slot />
+    </div>
+  </div>
+</div>

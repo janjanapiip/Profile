@@ -1,0 +1,209 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  readonly title: string;
+  readonly description?: string;
+  readonly image?: string;
+  readonly imageAlt?: string;
+  readonly siteUrl?: string;
+  readonly pathname?: string;
+  readonly keywords?: readonly string[];
+  readonly author?: string;
+  readonly twitterHandle?: string;
+  readonly noindex?: boolean;
+  readonly priceList?: ReadonlyArray<{
+    readonly name: string;
+    readonly price: string;
+    readonly features: readonly string[];
+  }>;
+}
+
+const {
+  title,
+  description = "Yuphi (Shimazaki Miyu) — Video editor untuk konten Kecantikan, Makanan & Minuman, dan Gaya Hidup. Layanan editing bilingual dengan estetika K-vibe / Jepang.",
+  image = "/assets/og-image.png",
+  imageAlt = "Yuphi — Portfolio Video Editor Shimazaki Miyu dengan estetika K-vibe / Jepang",
+  siteUrl = "https://miyu.fiqri.dev",
+  pathname = Astro.url.pathname,
+  keywords = [],
+  author = "Shimazaki Miyu",
+  twitterHandle = "@miyureiss20",
+  noindex = false,
+  priceList = [],
+} = Astro.props;
+
+const priceToNumber = (price: string): string => price.replace(/[^\d]/g, "");
+
+const canonicalUrl = new URL(pathname, siteUrl).toString();
+const ogImageUrl = new URL(image, siteUrl).toString();
+const pageTitle = title.includes("Yuphi") ? title : `${title} · Yuphi`;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Apply the saved/system theme before paint to avoid a flash. -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var dark = stored
+            ? stored === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", dark);
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
+
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="theme-color"
+      content="#e5f1fb"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0f1729"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Canonical & Alternate -->
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {
+      keywords.length > 0 && (
+        <meta name="keywords" content={keywords.join(", ")} />
+      )
+    }
+    <meta name="author" content={author} />
+    <meta
+      name="robots"
+      content={noindex
+        ? "noindex, nofollow"
+        : "index, follow, max-image-preview:large"}
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Yuphi — Portfolio Video Editor" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:secure_url" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={twitterHandle} />
+    <meta name="twitter:creator" content={twitterHandle} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Varela+Round&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="relative min-h-screen overflow-x-hidden">
+    <slot />
+
+    <!-- JSON-LD: Person / CreativeWork -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: author,
+        alternateName: "Yuphi",
+        url: canonicalUrl,
+        image: ogImageUrl,
+        jobTitle: "Video Editor",
+        description,
+        sameAs: [
+          "https://instagram.com/miyureiss20",
+          "https://tiktok.com/@miyureiss20",
+          "https://wa.me/62895388924697",
+        ],
+        knowsAbout: [
+          "Video Editing",
+          "Social Media Content",
+          "Beauty Content",
+          "Food & Beverage Content",
+          "Lifestyle Content",
+          "K-vibe Aesthetic",
+          "Japanese Aesthetic",
+        ],
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": canonicalUrl,
+        },
+      })}
+    />
+
+    {
+      priceList.length > 0 && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            serviceType: "Video Editing",
+            url: canonicalUrl,
+            areaServed: "ID",
+            provider: {
+              "@type": "Person",
+              name: author,
+              alternateName: "Yuphi",
+            },
+            hasOfferCatalog: {
+              "@type": "OfferCatalog",
+              name: "Daftar Harga Editing Video",
+              itemListElement: priceList.map((tier) => ({
+                "@type": "Offer",
+                name: tier.name,
+                description: tier.features.join(", "),
+                priceCurrency: "IDR",
+                price: priceToNumber(tier.price),
+                priceSpecification: {
+                  "@type": "UnitPriceSpecification",
+                  priceCurrency: "IDR",
+                  price: priceToNumber(tier.price),
+                  referenceQuantity: {
+                    "@type": "QuantitativeValue",
+                    value: 1,
+                    unitText: "per minute",
+                  },
+                },
+              })),
+            },
+          })}
+        />
+      )
+    }
+  </body>
+</html>
