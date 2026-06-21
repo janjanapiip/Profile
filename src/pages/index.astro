@@ -6,6 +6,7 @@ import Hero from "../partials/hero.astro";
 import About from "../partials/about.astro";
 import OrderFlow from "../partials/order-flow.astro";
 import StyleShowcase from "../partials/style-showcase.astro";
+import OrderForm from "../partials/order-form.astro";
 import KitchenSection from "../partials/kitchen-section.astro";
 import ContactSection from "../partials/contact-section.astro";
 import Footer from "../partials/footer.astro";
@@ -17,6 +18,7 @@ const {
   about,
   orderFlow,
   pricing,
+  orderForm,
   styleShowcase,
   kitchenSection,
   contact,
@@ -43,6 +45,7 @@ const {
     <About content={about} />
     <OrderFlow content={orderFlow} />
     <StyleShowcase content={styleShowcase} />
+    <OrderForm content={orderForm} styles={pricing.styles} />
     <KitchenSection content={kitchenSection} />
     <ContactSection content={contact} />
     <Footer name={footer.name} />

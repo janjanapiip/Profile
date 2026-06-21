@@ -19,7 +19,7 @@ Single-page portfolio/pricing site for a freelance video editor. Astro + Tailwin
 - `src/pages/index.astro` — main landing page with smooth-scroll sections
 - `src/pages/404.astro` — custom not-found page
 - `src/components/` — reusable UI components (`phone-frame.astro`, `video-placeholder.astro`, etc.)
-- `src/partials/` — page section / layout partials composed of smaller components (`navbar.astro`, `hero.astro`, `about.astro`, `order-flow.astro`, `style-showcase.astro`, `kitchen-section.astro`, `contact-section.astro`, `footer.astro`, `parallax-background.astro`)
+- `src/partials/` — page section / layout partials composed of smaller components (`navbar.astro`, `hero.astro`, `about.astro`, `order-flow.astro`, `style-showcase.astro`, `order-form.astro`, `kitchen-section.astro`, `contact-section.astro`, `footer.astro`, `parallax-background.astro`)
 - `src/layouts/layout.astro` — base HTML shell, SEO metadata, JSON-LD, global fonts
 - `src/styles/global.css` — Tailwind v4 entry point with `@theme`, custom colors, fonts, keyframes, and utility classes (`glass`, `glass-card`, `float-slow`, `float-mid`, `drift`, `fade-up`)
 - `src/data/content.ts` — all website copy, order flow, pricing, portfolio links, and section content

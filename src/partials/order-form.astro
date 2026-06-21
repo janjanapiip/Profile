@@ -1,0 +1,207 @@
+---
+import type { SiteContent } from "../data/content.ts";
+
+interface Props {
+  readonly content: SiteContent["orderForm"];
+  readonly styles: SiteContent["pricing"]["styles"];
+}
+
+const { content, styles } = Astro.props;
+
+const inputClass =
+  "w-full rounded-2xl border bg-white/60 px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-pink-pastel focus:ring-2 focus:ring-pink-pastel/50 dark:bg-white/5";
+const labelClass = "mb-1.5 block text-sm font-semibold text-foreground";
+---
+
+<section id="order" class="px-6 py-24">
+  <div class="mx-auto max-w-3xl">
+    <p class="font-display mb-4 text-center text-sm tracking-widest text-muted">
+      {content.heading}
+    </p>
+    <h2 class="font-display mb-4 text-center text-5xl md:text-6xl">
+      {content.title}
+    </h2>
+    <p class="mx-auto mb-12 max-w-2xl text-center text-muted">
+      {content.subtitle}
+    </p>
+
+    <form
+      class="glass-card rounded-[2rem] p-6 md:p-10"
+      data-order-form
+      data-wa-number={content.whatsappNumber}
+      novalidate
+    >
+      <div class="grid gap-5 md:grid-cols-2">
+        <div class="md:col-span-2">
+          <label class={labelClass} for="of-name">Nama</label>
+          <input
+            id="of-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="Nama atau brand kamu"
+            class={inputClass}
+          />
+        </div>
+
+        <div>
+          <label class={labelClass} for="of-platform">Platform</label>
+          <select id="of-platform" name="platform" required class={inputClass}>
+            {content.platforms.map((p) => <option value={p}>{p}</option>)}
+          </select>
+        </div>
+
+        <div>
+          <label class={labelClass} for="of-style">Pilih Style</label>
+          <select id="of-style" name="style" required class={inputClass}>
+            {
+              styles.map((style) => (
+                <option value={style.name} data-price={style.price}>
+                  {style.name} — Rp {style.price}/menit
+                </option>
+              ))
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class={labelClass} for="of-duration"
+            >Durasi Video (menit)</label
+          >
+          <input
+            id="of-duration"
+            name="duration"
+            type="number"
+            min="1"
+            step="1"
+            inputmode="numeric"
+            required
+            placeholder="cth. 1"
+            class={inputClass}
+          />
+        </div>
+
+        <div>
+          <label class={labelClass} for="of-deadline"
+            >Deadline <span class="font-normal text-muted-foreground"
+              >(opsional)</span
+            ></label
+          >
+          <input
+            id="of-deadline"
+            name="deadline"
+            type="date"
+            class={inputClass}
+          />
+        </div>
+
+        <div class="md:col-span-2">
+          <label class={labelClass} for="of-brief">Detail Brief</label>
+          <textarea
+            id="of-brief"
+            name="brief"
+            rows="4"
+            required
+            placeholder="Ceritakan konsep, vibe, referensi, kebutuhan subtitle/bahasa, link footage, dll."
+            class={`${inputClass} resize-y`}></textarea>
+        </div>
+      </div>
+
+      <p
+        data-form-error
+        class="mt-4 hidden text-sm text-destructive"
+        role="alert"
+      >
+        Lengkapi dulu kolom yang wajib diisi ya ♡
+      </p>
+
+      <button
+        type="submit"
+        class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3.5 font-bold text-background transition hover:scale-[1.02] md:w-auto"
+      >
+        <svg
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.82 2.41a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24zm4.52 10.42c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"
+          ></path>
+        </svg>
+        {content.submitLabel}
+      </button>
+
+      <p class="mt-4 text-center text-xs text-muted-foreground md:text-left">
+        {content.note}
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  (function initOrderForm() {
+    const form = document.querySelector<HTMLFormElement>("[data-order-form]");
+    if (!form) return;
+
+    const number = form.dataset.waNumber ?? "";
+    const error = form.querySelector<HTMLElement>("[data-form-error]");
+
+    function field(name: string) {
+      return form!.elements.namedItem(name) as
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+        | null;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        error?.classList.remove("hidden");
+        form.reportValidity();
+        return;
+      }
+      error?.classList.add("hidden");
+
+      const name = field("name")?.value.trim() ?? "";
+      const platform = field("platform")?.value ?? "";
+      const duration = field("duration")?.value.trim() ?? "";
+      const deadline = field("deadline")?.value.trim() ?? "";
+      const brief = field("brief")?.value.trim() ?? "";
+
+      const styleSelect = field("style") as HTMLSelectElement | null;
+      const styleName = styleSelect?.value ?? "";
+      const price = styleSelect?.selectedOptions[0]?.dataset.price ?? "";
+
+      const lines = [
+        "Halo Yuphi! Aku mau order edit video ✦",
+        "",
+        `Nama: ${name}`,
+        `Platform: ${platform}`,
+        `Style: ${styleName}${price ? ` (Rp ${price}/menit)` : ""}`,
+        `Durasi: ${duration} menit`,
+      ];
+      if (deadline) lines.push(`Deadline: ${deadline}`);
+      lines.push("", "Brief:", brief);
+
+      const url = `https://wa.me/${number}?text=${encodeURIComponent(
+        lines.join("\n"),
+      )}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+
+    // Clear the error hint as the user fixes fields
+    form.addEventListener("input", () => {
+      if (
+        error &&
+        !error.classList.contains("hidden") &&
+        form.checkValidity()
+      ) {
+        error.classList.add("hidden");
+      }
+    });
+  })();
+</script>

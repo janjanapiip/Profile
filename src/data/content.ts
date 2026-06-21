@@ -115,6 +115,15 @@ export interface SiteContent {
     readonly subtitle: string;
     readonly styles: readonly PricingStyle[];
   };
+  readonly orderForm: {
+    readonly heading: string;
+    readonly title: string;
+    readonly subtitle: string;
+    readonly whatsappNumber: string;
+    readonly submitLabel: string;
+    readonly note: string;
+    readonly platforms: readonly string[];
+  };
   readonly styleShowcase: StyleShowcase;
   readonly kitchenSection: KitchenSection;
   readonly contact: {
@@ -305,6 +314,16 @@ export const siteContent = {
         ],
       },
     ],
+  },
+  orderForm: {
+    heading: "♡ FORM ORDER",
+    title: "Isi Brief Kamu",
+    subtitle:
+      "Lengkapi detail di bawah, lalu kirim langsung ke WhatsApp-ku. Semakin jelas brief-nya, hasil video makin sesuai ekspektasi ✦",
+    whatsappNumber: "62895388924697",
+    submitLabel: "Kirim ke WhatsApp",
+    note: "Tombol akan membuka WhatsApp dengan brief yang sudah terisi otomatis. Belum ada yang terkirim sampai kamu menekan kirim di WhatsApp.",
+    platforms: ["TikTok", "Instagram Reels", "TikTok & Instagram", "Lainnya"],
   },
   contact: {
     subtitle: "ありがとう · 감사합니다",
